@@ -1,3 +1,5 @@
+import java.util.Map;
+import java.util.HashMap;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -43,6 +45,7 @@ public class Fotocopy extends Service {
     @Override
     
 public void tampilkan() {
+      Map<Integer, String> dataTransaksi = new HashMap<>();
     try {
         String sql = "SELECT * FROM transaksi";
         Connection conn = Koneksi.getConnection();
@@ -53,12 +56,14 @@ public void tampilkan() {
         System.out.println("ID | Tanggal | Nama Pelanggan | Total Bayar");
 
         while (rs.next()) {
-            System.out.println(
-                rs.getInt("id") + " | " +
+            dataTransaksi.put(rs.getInt("id"),
                 rs.getDate("tanggal_transaksi") + " | " +
                 rs.getString("nama_pelanggan") + " | " +
-                rs.getDouble("total_bayar")
-            );
+                rs.getDouble("total_bayar"));
+        }
+
+        for (Map.Entry<Integer, String> entry : dataTransaksi.entrySet()) {
+            System.out.println(entry.getKey() + " | " + entry.getValue());
         }
 
     } catch (SQLException e) {
